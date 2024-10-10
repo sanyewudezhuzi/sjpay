@@ -23,11 +23,11 @@ public class ExcelService {
     }
 
     public List<SysStaff> exportExcel() {
+        r.setSeed(System.currentTimeMillis());
         List<SysStaff> res = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
+        for (int i = 0; i < 100000; i++) {
             SysStaff staff = new SysStaff();
             staff.setUsername(randomStr(11));
-            staff.setStatus(1);
             staff.setPassword("123456");
             staff.setName(randomStr(4));
             res.add(staff);
@@ -35,12 +35,13 @@ public class ExcelService {
         return res;
     }
 
+
+    Random r = new Random();
+
     private String randomStr(int size) {
         StringBuilder str = new StringBuilder();
-        Random r = new Random();
-        r.setSeed(System.currentTimeMillis());
         for (int i = 0; i < size; i++) {
-            str.append(r.nextInt(26) + 96);
+            str.append((char) ('a' + r.nextInt(26)));
         }
         return str.toString();
     }

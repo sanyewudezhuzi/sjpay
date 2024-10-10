@@ -27,8 +27,8 @@
 
         <mysql-connector-java.version>8.0.28</mysql-connector-java.version>
         <druid-spring-boot-starter.version>1.2.8</druid-spring-boot-starter.version>
-        <mybatis-spring-boot-starter.version>3.0.3</mybatis-spring-boot-starter.version>
-        <mybatis-plus-boot-starter.version>3.5.5</mybatis-plus-boot-starter.version>
+        <mybatis-spring-boot-starter.version>2.2.2</mybatis-spring-boot-starter.version>
+        <mybatis-plus-boot-starter.version>3.4.2</mybatis-plus-boot-starter.version>
         <spring-boot-starter-data-redis.version>2.7.18</spring-boot-starter-data-redis.version>
         <lombok.verson>1.18.24</lombok.verson>
         <jjwt.version>0.12.6</jjwt.version>
