@@ -1,0 +1,12 @@
+# 配置数据库
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/zhuzi_sys?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+    username: root
+    password: abc123
+# mybatis 配置
+mybatis:
+  mapper-locations: org/zhuzi/*Mapper.xml
+  # 下面这个是用来指定pojo的包，这样在自定义的Mapper.xml文件中可以直接使用类名而不需要使用全类名
+  #type-aliases-package:
