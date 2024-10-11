@@ -1,6 +1,7 @@
 package org.zhuzi.excel;
 
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,16 +17,19 @@ import java.util.Random;
 @Slf4j
 public class ExcelService {
 
-    private final SysStaffDao dao;
+    private final ExcelDao dao;
 
     public void importExcel(MultipartFile file) throws IOException {
-        EasyExcel.read(file.getInputStream(), SysStaff.class, new ImportExcelService(dao)).sheet().doRead();
+        log.info("Get file...");
+        ExcelReaderSheetBuilder sheet = EasyExcel.read(file.getInputStream(), SysStaff.class, new ImportExcelService(dao)).sheet();
+        log.info("sheet = " + sheet.toString());
+        sheet.doRead();
     }
 
     public List<SysStaff> exportExcel() {
         r.setSeed(System.currentTimeMillis());
         List<SysStaff> res = new ArrayList<>();
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < 100; i++) {
             SysStaff staff = new SysStaff();
             staff.setUsername(randomStr(11));
             staff.setPassword("123456");

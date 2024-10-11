@@ -4,10 +4,7 @@ import com.alibaba.excel.EasyExcel;
 import com.sun.deploy.net.HttpResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +20,9 @@ public class ExcelController {
     private final ExcelService service;
 
     @PostMapping
-    public String importExcel(MultipartFile file) {
+    public String importExcel(@RequestParam MultipartFile file) {
+        log.info("Print file: " + file + ".");
+        log.info("Get file: [" + file.getName() + "](" + file.getSize() + ").");
         try {
             service.importExcel(file);
         } catch (Exception e) {

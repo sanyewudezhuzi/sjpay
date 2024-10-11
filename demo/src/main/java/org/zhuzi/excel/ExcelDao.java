@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 @Mapper
-public interface SysStaffDao {
+public interface ExcelDao {
 
     int batchSave(List<SysStaff> list);
 

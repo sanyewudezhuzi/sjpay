@@ -1,8 +1,8 @@
 package org.zhuzi.excel;
 
-public class ImportExcelService extends EasyExcelListener<SysStaff, SysStaffDao> {
+public class ImportExcelService extends EasyExcelListener<SysStaff, ExcelDao> {
 
-    public ImportExcelService(SysStaffDao dao) {
+    public ImportExcelService(ExcelDao dao) {
         super(dao);
     }
 
@@ -13,7 +13,7 @@ public class ImportExcelService extends EasyExcelListener<SysStaff, SysStaffDao>
 
     @Override
     public void saveData() {
-        super.getDao().batchSave(super.getCacheBuffer());
+        // super.dao.batchSave(super.cacheBuffer);
     }
 
 }
