@@ -4,12 +4,19 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="org.zhuzi.excel.ExcelDao">
-    <insert id="batchSave">
+    <insert id="batchSave" parameterType="org.zhuzi.excel.SysStaff">
         insert into sys_staff
-        (username, password, name, auth, status, create_time, update_time)
+        (id, username, password, name, auth, status, create_time, update_time)
         values
-        <foreach collection="list" item="data" open="(" close=")" separator=",">
-            #{data}
+        <foreach collection="list" item="item" separator=",">
+            (#{item.id},
+            #{item.username},
+            #{item.password},
+            #{item.name},
+            #{item.auth},
+            #{item.status},
+            #{item.createTime},
+            #{item.updateTime})
         </foreach>
     </insert>
 </mapper>

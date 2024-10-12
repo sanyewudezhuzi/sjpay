@@ -5,6 +5,7 @@ import com.alibaba.excel.read.builder.ExcelReaderSheetBuilder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -19,17 +20,16 @@ public class ExcelService {
 
     private final ExcelDao dao;
 
+    private final TransactionTemplate transactionTemplate;
+
     public void importExcel(MultipartFile file) throws IOException {
-        log.info("Get file...");
-        ExcelReaderSheetBuilder sheet = EasyExcel.read(file.getInputStream(), SysStaff.class, new ImportExcelService(dao)).sheet();
-        log.info("sheet = " + sheet.toString());
-        sheet.doRead();
+        EasyExcel.read(file.getInputStream(), SysStaff.class, new ImportExcelService(dao, transactionTemplate)).sheet().doRead();
     }
 
     public List<SysStaff> exportExcel() {
         r.setSeed(System.currentTimeMillis());
         List<SysStaff> res = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
+        for (int i = 0; i < 1000000; i++) {
             SysStaff staff = new SysStaff();
             staff.setUsername(randomStr(11));
             staff.setPassword("123456");

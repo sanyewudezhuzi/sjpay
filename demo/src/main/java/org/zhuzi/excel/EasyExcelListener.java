@@ -8,49 +8,55 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-public abstract class EasyExcelListener<T, V> implements ReadListener<T> {
+public abstract class EasyExcelListener<T> implements ReadListener<T> {
 
     // 默认缓冲队列大小
-    private static final int DEFAULT_BATCH_COUNT = 1000;
+    private static final int DEFAULT_BATCH_COUNT = 10000;
     // 缓冲队列大小
     private final Integer batchCount;
     // 缓冲队列
     protected List<T> cacheBuffer;
-    // 数据交互层
-    protected final V dao;
 
-    public EasyExcelListener(V dao) {
-        this(DEFAULT_BATCH_COUNT, dao);
+    public EasyExcelListener() {
+        this(DEFAULT_BATCH_COUNT);
     }
 
-    public EasyExcelListener(Integer batchCount, V dao) {
+    public EasyExcelListener(Integer batchCount) {
         this.batchCount = batchCount;
-        this.dao = dao;
         cacheBuffer = new ArrayList<>(this.batchCount);
     }
 
     @Override
-    public void invoke(T data, AnalysisContext context) throws RuntimeException {
-        log.info("invoke: data = " + data + ", context = " + context);
-        if (checkData()) {
+    public void invoke(T data, AnalysisContext context) {
+        if (checkData(data)) {
             cacheBuffer.add(data);
         }
         if (cacheBuffer.size() >= batchCount) {
-            saveData();
+            try {
+                saveData();
+            } catch (Exception e) {
+                log.error("EasyExcelListener invoke error: " + e.getMessage());
+                throw new RuntimeException(e);
+            }
             cacheBuffer = new ArrayList<>(batchCount);
         }
     }
 
     @Override
     public void doAfterAllAnalysed(AnalysisContext context) {
-        saveData();
+        try {
+            saveData();
+        } catch (Exception e) {
+            log.error("EasyExcelListener doAfterAllAnalysed error: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
         cacheBuffer.clear();
     }
 
-    public boolean checkData() throws RuntimeException {
+    protected boolean checkData(T data) throws RuntimeException {
         return true;
     }
 
-    public abstract void saveData();
+    protected abstract void saveData() throws InterruptedException;
 
 }

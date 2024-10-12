@@ -21,11 +21,13 @@ public class ExcelController {
 
     @PostMapping
     public String importExcel(@RequestParam MultipartFile file) {
-        log.info("Print file: " + file + ".");
-        log.info("Get file: [" + file.getName() + "](" + file.getSize() + ").");
+        if (file == null) {
+            return "error";
+        }
         try {
             service.importExcel(file);
         } catch (Exception e) {
+            log.error("error: " + e.getMessage());
             return e.getMessage();
         }
         return "success";

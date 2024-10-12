@@ -1,8 +1,12 @@
 # 配置数据库
 spring:
+  servlet:
+    multipart:
+      max-file-size: 300MB
+      max-request-size: 500MB
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/zhuzi_sys?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
-    username: root
-    password: abc123
-
+    druid:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/zhuzi_sys?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
+      username: root
+      password: abc123
