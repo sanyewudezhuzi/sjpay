@@ -15,6 +15,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class ImportExcelService extends EasyExcelListener<SysStaff> {
@@ -33,8 +34,8 @@ public class ImportExcelService extends EasyExcelListener<SysStaff> {
     // 导入功能最大时间(单位: 秒)
     private static final long MAX_TIME = 60 * 2;
 
-    public ImportExcelService(ExcelDao dao, TransactionTemplate transactionTemplate) {
-        super();
+    public ImportExcelService(int batchCount, ExcelDao dao, TransactionTemplate transactionTemplate) {
+        super(batchCount);
         this.dao = dao;
         this.transactionTemplate = transactionTemplate;
         executor = new ThreadPoolExecutor(
@@ -50,15 +51,12 @@ public class ImportExcelService extends EasyExcelListener<SysStaff> {
     @Override
     public void saveData() throws InterruptedException {
         ArrayList<List<SysStaff>> lists = new ArrayList<>(ListUtil.split(super.cacheBuffer, 1000));
-        // List<List<SysStaff>> lists = ListUtil.split(super.cacheBuffer, 1000);
         CountDownLatch cdt = new CountDownLatch(lists.size());
         for (List<SysStaff> list : lists) {
             try {
-                executor.execute(() -> runFunc(list));
+                executor.execute(() -> runFunc(list, cdt));
             } catch (Exception e) {
                 log.error("import excel error: " + e.getMessage());
-            } finally {
-                cdt.countDown();
             }
         }
         if (!cdt.await(MAX_TIME, TimeUnit.SECONDS)) {
@@ -67,25 +65,42 @@ public class ImportExcelService extends EasyExcelListener<SysStaff> {
         lists.clear();
     }
 
-    private void runFunc(List<SysStaff> list) {
-        transactionTemplate.executeWithoutResult(status -> {
-            for (SysStaff item : list) {
-                item.setPassword(DigestUtils.md5DigestAsHex(item.getPassword().getBytes()));
-                item.setStatus(1);
-                item.setAuth(1);
-                item.setCreateTime(LocalDateTime.now());
-                item.setUpdateTime(LocalDateTime.now());
-                try {
-                    dao.insert(item);
-                } catch (DuplicateKeyException e) {
-                    log.debug("update: username[" + item.getUsername() + "] has been insert.");
-                    dao.update(item, new LambdaUpdateWrapper<SysStaff>().eq(SysStaff::getUsername, item.getUsername()));
-                } catch (Exception e) {
-                    log.error("unknow error: " + e.getMessage());
-                    throw new RuntimeException(e.getMessage());
-                }
-            }
-        });
+    private void runFunc(List<SysStaff> list, CountDownLatch cdt) {
+        try {
+            // transactionTemplate.executeWithoutResult(status -> {
+            //     for (SysStaff item : list) {
+            //         item.setPassword(DigestUtils.md5DigestAsHex(item.getPassword().getBytes()));
+            //         item.setStatus(1);
+            //         item.setAuth(1);
+            //         item.setCreateTime(LocalDateTime.now());
+            //         item.setUpdateTime(LocalDateTime.now());
+            //         item.setDeleted(false);
+            //         try {
+            //             dao.insert(item);
+            //         } catch (DuplicateKeyException e) {
+            //             dao.update(item, new LambdaUpdateWrapper<SysStaff>().eq(SysStaff::getUsername, item.getUsername()));
+            //         } catch (Exception e) {
+            //             log.error("unknown error: " + e.getMessage());
+            //             throw new RuntimeException(e.getMessage());
+            //         }
+            //     }
+            // });
+            dao.batchSave(list.stream().peek(staff -> {
+                staff.setPassword(DigestUtils.md5DigestAsHex(staff.getPassword().getBytes()));
+                staff.setStatus(1);
+                staff.setAuth(1);
+                staff.setCreateTime(LocalDateTime.now());
+                staff.setUpdateTime(LocalDateTime.now());
+                staff.setDeleted(false);
+            }).collect(Collectors.toList()));
+        } finally {
+            cdt.countDown();
+        }
     }
 
+    @Override
+    protected void end() {
+        executor.shutdown();
+        log.info("executor has been closed.");
+    }
 }

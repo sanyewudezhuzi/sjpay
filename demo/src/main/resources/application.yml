@@ -10,3 +10,9 @@ spring:
       url: jdbc:mysql://localhost:3306/zhuzi_sys?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: root
       password: abc123
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+logging:
+  level:
+    org.zhuzi: debug # all < debug < info < warn < error < off

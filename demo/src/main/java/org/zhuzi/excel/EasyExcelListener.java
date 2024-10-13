@@ -28,9 +28,10 @@ public abstract class EasyExcelListener<T> implements ReadListener<T> {
 
     @Override
     public void invoke(T data, AnalysisContext context) {
-        if (checkData(data)) {
-            cacheBuffer.add(data);
+        if (!checkData(data)) {
+            return;
         }
+        cacheBuffer.add(data);
         if (cacheBuffer.size() >= batchCount) {
             try {
                 saveData();
@@ -49,14 +50,40 @@ public abstract class EasyExcelListener<T> implements ReadListener<T> {
         } catch (Exception e) {
             log.error("EasyExcelListener doAfterAllAnalysed error: " + e.getMessage());
             throw new RuntimeException(e);
+        } finally {
+            cacheBuffer.clear();
+            end();
         }
-        cacheBuffer.clear();
     }
 
+    /**
+     * 校验数据
+     *
+     * @param data Excel 的单行数据, 导出转为 data
+     * @return 校验通过则返回 true, 并将 data 添加到缓冲队列 cacheBuffer 中, 如果校验不通过则返回 false
+     * @throws RuntimeException 允许抛出异常
+     */
     protected boolean checkData(T data) throws RuntimeException {
         return true;
     }
 
+    /**
+     * 保存数据
+     * <p>
+     * 每当缓冲队列到达阈值或 Excel 数据解析完成时会调用此方法
+     *
+     * @throws InterruptedException 允许抛出异常
+     */
     protected abstract void saveData() throws InterruptedException;
+
+    /**
+     * 结束方法
+     * <p>
+     * 当 Excel 数据解析完成并调用完 saveData() 方法后会调用此方法.
+     * <p>
+     * 一般用于释放资源.
+     */
+    protected void end() {
+    }
 
 }

@@ -43,6 +43,6 @@ public class SysStaff implements Serializable {
 
     @ExcelIgnore
     @TableLogic(value = "0", delval = "1")
-    private Integer deleted;
+    private Boolean deleted;
 
 }

@@ -38,8 +38,7 @@ public class ExcelController {
         List<SysStaff> data = service.exportExcel();
         response.setContentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
         response.setCharacterEncoding("utf-8");
-        // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-        String fileName = "zhuzidaochu";
+        String fileName = "data";
         response.setHeader("Content-disposition", "attachment;filename*=utf-8''" + fileName + ".xlsx");
         EasyExcel.write(response.getOutputStream(), SysStaff.class).sheet().doWrite(data);
     }
