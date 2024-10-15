@@ -1,4 +1,3 @@
-# 配置数据库
 spring:
   servlet:
     multipart:
@@ -10,3 +9,22 @@ spring:
       url: jdbc:mysql://localhost:3306/zhuzi_sys?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&useSSL=false
       username: root
       password: abc123
+
+# 支付宝相关配置
+alipay:
+  # 应用id
+  appId: 9021000141627270
+  # 商家pid
+  pid: 2088721047116164
+  # 商户私钥
+  merchantPrivateKey: MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCfkf53TQ18B/5F8sVkPMXf7WY8L7JamLXlczo6etGQg+f4PrYNo1JL26vqoaN0BJ3XdPXsJieqLltRbWJf3g+WpmQbaRaoLjax6G/BLgkgCJPQja9fl+JrgD19mLHtSsxKFBbX61VsiJDPmFHEMBH6qJy+XQvFQtbXgxEImVeTL9J3Rzj0HlbiXFIvHXJb2bEICd/8xT8Zd2bPTAgpkkHB8OULCAMt3fg+g/AdVqUG+/4IdffrXGPfsidK5x5H+1Hg1MAckaH/vUEe8pja1KPwR9oTvqsV26cP5wYHUJs0c4PbM29FCEjf50d8G66+BIwNQ88HTC9HNU1vcRgNcvD3AgMBAAECggEBAJLQdno5kLCPginFZkwFhmGzQR8bG1QzsRf9XpOzsODwHBvRRxthKzTUVma4dXUnUjqMSEAQEuqHYEmZBKwD2f/X878sf0YZzwT9QOVSf97TRXza/4JKcm5KPUkzlnEnIrL9rM7YnW4QcHwwPvrs533iaOTVIyFJj/YVhzSMMYEfRaVYkXYeYSmkubTth7nIDm4ym/BBmDv/QXv8YD22RDrAGkv7DfWU7GRvM0OTCfOL9tlhVRDylSRAxjYSBbLJ0Ntv2E33YBWzhzdGhw8LWzMKHqgGbg3lHB8OvtatTnwyuOlFJtvI1c0RgLB9qFGuZHsJaOoOrbBN87NXcg8LT+ECgYEA5ttsV4sxkCfaaNAm9Oayl9MJwMSkmDavUF6Dn7xwHzUG8FPEyZHWv+6PYOZKHEfh9Pk+iKWoReBtqpWFKDLStD/yfWR56CFSu56ODUgRIT3M6lNPHFX6IIrlIjVEC3QyAM1xn55ZO2kKeSWg2/9CZsYfwmOVN/PzoEU2zrjSg98CgYEAsPMB4q49KkdgVPJqQ6cZQckDk8g//8pAtx0Pgw3gmbYJAO8t/SiAkTeuSbHSRRP0SDGqFsJdIiMknispnWodYijXYETnKAl8IwJXsliDORGTW8AKYpXr0z62wIigGVgHwBaWbeNuTP7eT1o/ld/0ry9s67ReG3FEDc5MKbLsdekCgYAeR6GKSgOSOOf433R8otXB/DhHRIOiQ2nzTLJO/VRng3kJhLNHDQ3x1sSPnSUTWIpWq2p8Wd4cbDd2LG5uu1vPsKOJtugWfmhvm3heXZmBlq2N/qddvBk2s4EiX4IxTmhQmqHQoeBqXni1My5KLMz01f/Ma2tjD2hhGTL7IlraWQKBgDS4Ukl9bE/acEMe7rY1ZPsKrvwq35aQZfOovuRnEBH8AHa8zFDu7k9V7aGbT3CxX0jbMzgQtLrlCZXuejmiUhra3ECchtqQ6OFtYz+Jy58HM4ZUk0OIM3j+6Gg4zKqAZd6/XBZleomKLiYqV2OKFFbVpHgdhyRZ/NK4Mk0COB1xAoGAX9oYigs/M7WwoRY9OZiyLiX5cVKe/GL06BMeWFmguEe1hHrcuQrDdiNJ/eJFUPYL+C8+foxBiT7VhuSmzMloxarredUD8pwKs0qBRwaOsepLTTVhjk4KdCWAwj+oLSi87u38kRO6DHawc5mET4qaTrsvN3RhzbHf+RttVg8e5WY=
+  # 支付宝公钥
+  alipayPublicKey: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvP3igERjpiRLsAmZ8+vTGinHL5VyVLyjS0zblOr9JkBlPWkVUTSvdGAN2ahHjggNhygRk2i79moQEOOVexiQaazbFkMAWoJs4Nl2jIcxll8tlzYExRurkoZImZTAbcIqVlkBIj0lG8cuyUwfLidaGug94J52DkaioqV0X6cbEMaXno/z47CrOB8WE6im4U8ksFidVy3Q2yUahznM8WWbZOy/HGgs31ZwVDhUK/rl54NvKsQ2djR+KjycidzKpKvrslm03zTpbJm+DlGIE2O/NMns7ftal7z9XjGSiJmRNUhm4T30O5TnqoiCHpbEluoQyUS/nA1HxlngFtO6irKkkQIDAQAB
+  # 接口内容加密密钥
+  contentKey: xteJt0L+v1RkucXKRbPWpA==
+  # 页面跳转异步通知页面路径
+  notifyUrl: http://www.sanyewudezhuzi.com/pay/alipay
+  # 页面跳转同步通知页面路径
+  returnUrl: https://www.baidu.com
+  # 支付宝网关
+  gatewayUrl: https://openapi-sandbox.dl.alipaydev.com/gateway.do
