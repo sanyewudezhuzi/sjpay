@@ -25,6 +25,12 @@ public class PayController {
         config.setMargin(3);
         config.setImg("F:/Art/Photo/zhuzi.jpg");
         QrCodeUtil.generate("https://space.bilibili.com/479724929?spm_id_from=333.1007.0.0", config, FileUtil.file("F:/qrcode.jpg"));
+    private final PayService service;
+
+    @GetMapping("/face2face")
+    public String face2face() {
+        log.info("当面付接口: 需要用浏览器访问该接口");
+        return service.face2face();
     }
 
 }
