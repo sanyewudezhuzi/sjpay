@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
 @Slf4j
 public class PayController {
 
+    private final PayService service;
+
     @GetMapping("/qrcode")
     public void qrcode() {
         QrConfig config = new QrConfig();
@@ -25,7 +27,7 @@ public class PayController {
         config.setMargin(3);
         config.setImg("F:/Art/Photo/zhuzi.jpg");
         QrCodeUtil.generate("https://space.bilibili.com/479724929?spm_id_from=333.1007.0.0", config, FileUtil.file("F:/qrcode.jpg"));
-    private final PayService service;
+    }
 
     @GetMapping("/face2face")
     public String face2face() {
