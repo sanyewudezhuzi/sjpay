@@ -22,9 +22,9 @@ public class PayService {
     public String face2face() {
         // 获取订单信息
         JSONObject json = new JSONObject();
-        json.put("id", "114514");
-        json.put("goods", "Lumix S5");
-        json.put("money", 7999);
+        json.put("id", "114514001");
+        json.put("goods", "Xiaomi SU7 小米SU7 海湾蓝");
+        json.put("money", 215900);
 
         // 封装请求
         AlipayTradePagePayRequest request = new AlipayTradePagePayRequest();
@@ -37,7 +37,7 @@ public class PayService {
         request.setBizModel(model);
 
         // 发起请求, 调用支付宝
-        AlipayTradePagePayResponse response = null;
+        AlipayTradePagePayResponse response;
         try {
             response = alipayClient.pageExecute(request);
             if (response.isSuccess()) {

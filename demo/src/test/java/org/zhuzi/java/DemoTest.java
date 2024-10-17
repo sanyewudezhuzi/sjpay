@@ -15,25 +15,11 @@ public class DemoTest {
 }
 
 class Solution {
-    public int numberOfPairs(int[] nums1, int[] nums2, int k) {
-        Map<Integer, Integer> map = new HashMap<>();
-        for (int num : nums1) {
-            if (num % k != 0) {
-                continue;
-            }
-            num /= k;
-            for (int i = 1; i * i <= num; i++) {
-                if (num % i == 0) {
-                    map.merge(i, 1, Integer::sum);
-                    if (i * i < num) {
-                        map.merge(num / i, 1, Integer::sum);
-                    }
-                }
-            }
-        }
-        int res = 0;
-        for (int num : nums2) {
-            res += map.getOrDefault(num, 0);
+    public double minimumAverage(int[] nums) {
+        Arrays.sort(nums);
+        double res = Double.MAX_VALUE;
+        for (int i = 0; i < nums.length / 2; i++) {
+            res = Math.min((nums[i] + nums[nums.length - 1 - i]) / 2.0, res);
         }
         return res;
     }
